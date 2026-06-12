@@ -1,1 +1,9 @@
 db-data
+deployment/terraform/dev.tfvars
+deployment/terraform/prod.tfvars
+deployment/terraform/staging.tfvars
+
+deployment/terraform/.terraform
+deployment/terraform/.terraform.lock.hcl
+
+deployment/kubernetes/secerets.*
