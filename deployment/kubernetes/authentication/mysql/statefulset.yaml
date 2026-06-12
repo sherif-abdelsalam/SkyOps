@@ -4,7 +4,7 @@ kind: StatefulSet
 metadata:
   name: mysql
 spec:
-  serviceName: "mysql"
+  serviceName: "mysql"   ## headless service name
   replicas: 1
   selector:
     matchLabels:
@@ -16,40 +16,20 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8.0 
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-secret
               key: root-password
-        - name: MYSQL_AUTH_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: auth-password
-        - name: MYSQL_USER
-          value: authuser
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: auth-password
-        volumeMounts:
-        - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
-        - name: config-volume
-          mountPath: /docker-entrypoint-initdb.d
-      volumes:
-      - name: config-volume
-        configMap:
-          name: mysql-config
+
   volumeClaimTemplates:
   - metadata:
       name: mysql-persistent-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "standard"
+      storageClassName: "gp2"
       resources:
         requests:
           storage: 10Gi
