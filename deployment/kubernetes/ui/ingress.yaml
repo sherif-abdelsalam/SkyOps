@@ -2,20 +2,18 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: weatherapp-ui-ingress
+  namespace: default        # change to your app's namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - weatherapp.local
-      secretName: weatherapp-ui-tls
+  ingressClassName: nginx   # uses the default NGINX controller we installed
   rules:
-    - host: weatherapp.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: weatherapp-ui
-                port:
-                  number: 3000
+  - http:                   # no host — works with any hostname or IP
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: weatherapp-ui   # your service name
+            port:
+              number: 3000
