@@ -27,3 +27,9 @@ variable "eks_version" {
   description = "The version of EKS to use for the cluster"
   type        = string
 }
+
+variable "ingress_nginx_version" {
+  description = "NGINX Ingress Controller Helm chart version"
+  type        = string
+  default     = "4.10.1"
+}
