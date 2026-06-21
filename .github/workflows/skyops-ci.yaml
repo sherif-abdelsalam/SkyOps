@@ -2,7 +2,7 @@ name: SkyOps CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:                    # only trigger when app code changes
       - 'apps/auth/**'
       - 'apps/UI/**'
