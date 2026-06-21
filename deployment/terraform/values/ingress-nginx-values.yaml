@@ -1,0 +1,14 @@
+controller:
+  replicaCount: 1
+
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+
+  ingressClassResource:
+    name: nginx
+    default: true
+
+  config:
+    use-forwarded-headers: "true"
