@@ -1,3 +1,6 @@
-output "repository_url" {
-  value = aws_ecr_repository.app.repository_url
+
+output "ecr_repos" {
+  value = {
+    for k, v in aws_ecr_repository.services : k => v.repository_url
+  }
 }
