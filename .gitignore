@@ -7,3 +7,5 @@ deployment/terraform/.terraform
 deployment/terraform/.terraform.lock.hcl
 
 deployment/kubernetes/secerets.*
+
+deloyment/argocd/repo*
