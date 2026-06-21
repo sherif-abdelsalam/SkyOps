@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: git@github.com:sherif-abdelsalam/SkyOps.git
     targetRevision: main
-    path: deployment/Argocd/bootstrap
+    path: deploymentls/Argocd
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
