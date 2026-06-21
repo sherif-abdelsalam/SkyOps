@@ -20,7 +20,6 @@ def handle_error(error):
 
 @app.route('/<city>')
 def get_weather(city):
-    url = "https://weatherapi-com.p.rapidapi.com/current.json"
     querystring = {"q": city}
     headers = {
         'x-rapidapi-host': "weatherapi-com.p.rapidapi.com",
@@ -28,7 +27,7 @@ def get_weather(city):
     }
 
     try:
-        response = requests.get(url, headers=headers, params=querystring)
+        response = requests.get("https://weatherapi-com.p.rapidapi.com/current.json", headers=headers, params=querystring)
         response.raise_for_status()  # Raise an exception for non-2xx status codes
         weather_data = response.json()
         return jsonify(weather_data)

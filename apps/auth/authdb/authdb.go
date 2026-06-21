@@ -51,6 +51,7 @@ func GetUserByName(user_name string, db *sql.DB, dbName string) (User, error) {
 		return user, err
 	}
 	defer results.Close()
+	
 	for results.Next() {
 		err = results.Scan(&user.ID, &user.Name, &user.Password)
 		if err != nil {

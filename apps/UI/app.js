@@ -181,6 +181,6 @@ app.use((err, req, res, next) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Weather app listening at http://localhost:${port}`);
+    console.log(`The weather app is listening on port ${port}`);
 });
 
