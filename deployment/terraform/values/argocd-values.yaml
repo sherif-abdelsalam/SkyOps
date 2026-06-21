@@ -1,0 +1,43 @@
+global:
+  domain: ${ingress_host}
+
+configs:
+  params:
+    server.insecure: true   # using NGINX ingress for TLS termination
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: ${ingress_host}
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+repoServer:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+applicationSet:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+redis:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi

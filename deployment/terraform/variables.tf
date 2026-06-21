@@ -33,3 +33,9 @@ variable "ingress_nginx_version" {
   type        = string
   default     = "4.10.1"
 }
+
+
+variable "argocd_ingress_host" {
+  description = "The hostname for ArgoCD ingress (e.g., argocd.example.com)"
+  type        = string
+}
