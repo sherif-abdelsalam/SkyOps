@@ -6,9 +6,9 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx   # uses the default NGINX controller we installed
+  ingressClassName: nginx  
   rules:
-  - http:                   # no host — works with any hostname or IP
+  - http:                   # no host
       paths:
       - path: /
         pathType: Prefix
@@ -17,3 +17,11 @@ spec:
             name: weatherapp-ui   # your service name
             port:
               number: 3000
+
+      - path: /argocd
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
