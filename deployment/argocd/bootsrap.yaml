@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  namespace: argocd
+  # annotations:
+  #   argocd-image-updater.argoproj.io/image-list: sherifabdelsalam111/nginx-sherif:~v0.1
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:sherif-abdelsalam/SkyOps.git
+    targetRevision: main
+    path: deployment/argocd
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=false
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true⏎                                                                                                                 sherif-abdelsalam@hodhod ~/I/a/a/e/example01> 
