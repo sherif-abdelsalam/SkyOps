@@ -1,0 +1,106 @@
+name: SkyOps CI
+
+on:
+  push:
+    branches: [main]
+    paths:                    # only trigger when app code changes
+      - 'apps/auth/**'
+      - 'apps/UI/**'
+      - 'apps/weather/**'
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+jobs:
+  build-auth:
+    name: Build & Push Auth
+    runs-on: ubuntu-latest
+    if: |
+      contains(join(github.event.commits.*.modified, ','), 'apps/auth/') ||
+      contains(join(github.event.commits.*.added, ','), 'apps/auth/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/auth
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/skyops-auth:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/skyops-auth:latest
+
+  # ─────────────────────────────────────────
+  build-ui:
+    name: Build & Push UI
+    runs-on: ubuntu-latest
+    if: |
+      contains(join(github.event.commits.*.modified, ','), 'apps/UI/') ||
+      contains(join(github.event.commits.*.added, ','), 'apps/UI/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/UI
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/skyops-ui:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/skyops-ui:latest
+
+  # ─────────────────────────────────────────
+  build-weather:
+    name: Build & Push Weather
+    runs-on: ubuntu-latest
+    if: |
+      contains(join(github.event.commits.*.modified, ','), 'apps/weather/') ||
+      contains(join(github.event.commits.*.added, ','), 'apps/weather/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/weather
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/skyops-weather:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/skyops-weather:latest
