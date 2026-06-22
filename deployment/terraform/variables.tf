@@ -50,3 +50,19 @@ variable "app_namespace" {
   description = "The Kubernetes namespace for application deployments"
   type        = string
 }
+
+variable "eso_service_account" {
+  description = "The name of the Kubernetes Service Account for ESO"
+  type        = string
+}
+
+
+variable "secret_arns" {
+  type        = list(string)
+  description = "List of Secrets Manager ARNs ESO is allowed to read"
+}
+
+variable "enable_external_secrets_crds" {
+  type = bool
+  default = true
+}
