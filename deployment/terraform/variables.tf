@@ -39,3 +39,14 @@ variable "argocd_ingress_host" {
   description = "The hostname for ArgoCD ingress (e.g., argocd.example.com)"
   type        = string
 }
+
+
+variable "eso_namespace" {
+  description = "The Kubernetes namespace for ESO components"
+  type        = string
+}
+
+variable "app_namespace" {
+  description = "The Kubernetes namespace for application deployments"
+  type        = string
+}

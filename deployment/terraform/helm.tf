@@ -13,7 +13,7 @@ resource "helm_release" "ingress_nginx" {
     file("${path.module}/values/ingress-nginx-values.yaml")
   ]
 }
-
+  
 
 
 # resource "helm_release" "argocd" {
@@ -37,16 +37,38 @@ resource "helm_release" "ingress_nginx" {
 # }
 
 
-# resource "helm_release" "sealed_secrets" {
-#   name             = "sealed-secrets"
-#   repository       = "https://bitnami-labs.github.io/sealed-secrets"
-#   chart            = "sealed-secrets"
-#   namespace        = "kube-system"
-#   create_namespace = false
-#   version          = "2.15.3"
 
-#   depends_on = [module.eks]
+# resource "kubernetes_namespace" "external_secrets" {
+#   metadata {
+#     name = var.eso_namespace 
+#   }
 # }
 
+# resource "kubernetes_namespace" "app" {
+#   metadata {
+#     name = var.app_namespace   
+#   }
+# }# اسمه "app-gamma" — namespace التطبيق
 
 
+# resource "helm_release" "external_secrets" {
+#   name       = "external-secrets"
+#   namespace  = kubernetes_namespace.external_secrets.metadata[0].name
+#   repository = "https://charts.external-secrets.io"
+#   chart      = "external-secrets"
+#   version    = "0.10.5"           # ← pin the version دايماً
+
+#   wait    = true
+#   timeout = 600
+
+#   values = [yamlencode({
+#     installCRDs = true         
+#     serviceAccount = {
+#       create = true
+#       name   = var.eso_service_account
+#       annotations = {
+#         "eks.amazonaws.com/role-arn" = var.eso_irsa_role_arn  # ← IRSA هنا
+#       }
+#     }
+#   })]
+# }
