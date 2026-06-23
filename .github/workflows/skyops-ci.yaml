@@ -6,10 +6,10 @@ on:
       - main
       - workflow-dispatch
       - master
-    # paths:                    # only trigger when app code changes
-    #   - 'apps/auth/**'
-    #   - 'apps/UI/**'
-    #   - 'apps/weather/**'
+    paths:                    # only trigger when app code changes
+      - 'apps/auth/**'
+      - 'apps/UI/**'
+      - 'apps/weather/**'
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -19,9 +19,9 @@ jobs:
   build-auth:
     name: Build & Push Auth
     runs-on: ubuntu-latest
-    # if: |
-    #   contains(join(github.event.commits.*.modified, ','), 'apps/auth/') ||
-    #   contains(join(github.event.commits.*.added, ','), 'apps/auth/')
+    if: |
+      contains(join(github.event.commits.*.modified, ','), 'apps/auth/') ||
+      contains(join(github.event.commits.*.added, ','), 'apps/auth/')
 
     steps:
       - name: Checkout
@@ -50,9 +50,9 @@ jobs:
   build-ui:
     name: Build & Push UI
     runs-on: ubuntu-latest
-    # if: |
-    #   contains(join(github.event.commits.*.modified, ','), 'apps/UI/') ||
-    #   contains(join(github.event.commits.*.added, ','), 'apps/UI/')
+    if: |
+      contains(join(github.event.commits.*.modified, ','), 'apps/UI/') ||
+      contains(join(github.event.commits.*.added, ','), 'apps/UI/')
 
     steps:
       - name: Checkout
@@ -81,9 +81,9 @@ jobs:
   build-weather:
     name: Build & Push Weather
     runs-on: ubuntu-latest
-    # if: |
-    #   contains(join(github.event.commits.*.modified, ','), 'apps/weather/') ||
-    #   contains(join(github.event.commits.*.added, ','), 'apps/weather/')
+    if: |
+      contains(join(github.event.commits.*.modified, ','), 'apps/weather/') ||
+      contains(join(github.event.commits.*.added, ','), 'apps/weather/')
 
     steps:
       - name: Checkout
