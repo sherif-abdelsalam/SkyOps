@@ -9,4 +9,6 @@ deployment/terraform/.terraform.lock.hcl
 deployment/kubernetes/secerets.*
 
 deloyment/argocd/repo*
-secrets-k8s
+secrets-ssm.sh
+deployment/argocd/repo_connect.yaml
+repo_connect.yaml

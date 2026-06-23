@@ -3,7 +3,7 @@
 ############################################
 resource "kubernetes_namespace_v1" "external_secrets" {
   metadata {
-    name = var.eso_namespace # e.g., "ghost-secrets"
+    name = var.eso_namespace 
     labels = {
       "app.kubernetes.io/managed-by" = "terraform"
     }
@@ -12,7 +12,7 @@ resource "kubernetes_namespace_v1" "external_secrets" {
 
 resource "kubernetes_namespace_v1" "app" {
   metadata {
-    name = var.app_namespace # e.g., "app-gamma"
+    name = var.app_namespace 
     labels = {
       "app.kubernetes.io/managed-by" = "terraform"
     }
@@ -47,20 +47,6 @@ resource "helm_release" "external_secrets" {
   })]
 }
 
-
-
-############################################
-# # OIDC Provider
-# ############################################
-# resource "aws_iam_openid_connect_provider" "eks" {
-#     ## url is used for proving that the OIDC provider is trusted by AWS. 
-#     ## It is usually in the format of "https://oidc.eks.<region>.amazonaws.com/id/<eks-cluster-id>"
-#   url             = module.eks.cluster_oidc_issuer_url
-#   ## The client ID list is used to specify the audience that can use the OIDC provider.
-#   client_id_list  = ["sts.amazonaws.com"]
-#   ## The thumbprint list is used to verify the SSL certificate of the OIDC provider.
-#   thumbprint_list = [module.eks.cluster_tls_certificate_sha1_fingerprint]
-# }
 
 ############################################
 # IRSA Role for ESO
@@ -104,94 +90,3 @@ resource "aws_iam_policy" "secret_manager_read_access" {
   })
 }
 
-
-#####################
-############################################
-# ClusterSecretStore -> AWS Secrets Manager
-############################################
-resource "kubernetes_manifest" "cluster_secret_store" {
-  count = var.enable_external_secrets_crds ? 1 : 0
-
-  manifest = {
-    apiVersion = "external-secrets.io/v1beta1"
-    kind       = "ClusterSecretStore"
-    metadata   = { name = "aws-secrets" }
-    spec = {
-      provider = {
-        aws = {
-          service = "SecretsManager"
-          region  = var.region
-          auth = {
-            jwt = {
-              serviceAccountRef = {
-                name      = var.eso_service_account
-                namespace = kubernetes_namespace_v1.external_secrets.metadata[0].name
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-
-############################################
-# ExternalSecret -> sync db creds into app ns
-############################################
-resource "kubernetes_manifest" "db_auth_external_secret" {
-  count = var.enable_external_secrets_crds ? 1 : 0
-
-  manifest = {
-    apiVersion = "external-secrets.io/v1beta1"
-    kind       = "ExternalSecret"
-
-    metadata = {
-      name      = "skyops-db-auth"
-      namespace = kubernetes_namespace_v1.app.metadata[0].name
-    }
-
-    spec = {
-      refreshInterval = "1h"
-
-      secretStoreRef = {
-        name = "aws-secrets"
-        kind = "ClusterSecretStore"
-      }
-
-      target = {
-        name           = "skyops-db-auth"
-        creationPolicy = "Owner"
-      }
-
-      data = [
-        {
-          secretKey = "auth-password"
-          remoteRef = {
-            key = "skyops-dev/auth-password"
-          }
-        },
-        {
-          secretKey = "root-password"
-          remoteRef = {
-            key = "skyops-dev/root-password"
-          },
-        },
-        {
-          secretKey = "apikey"
-          remoteRef = {
-            key = "skyops-dev/apikey"
-          }
-        },
-        {
-          secretKey = "secret-key"
-          remoteRef = {
-            key = "skyops-dev/secret-key"
-          }
-        }
-      ]
-    }
-  }
-
-  depends_on = [kubernetes_manifest.cluster_secret_store]
-}
