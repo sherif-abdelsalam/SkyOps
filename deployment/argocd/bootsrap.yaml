@@ -5,8 +5,8 @@ metadata:
   namespace: argocd
   # annotations:
   #   argocd-image-updater.argoproj.io/image-list: sherifabdelsalam111/nginx-sherif:~v0.1
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  # finalizers:
+  #   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
