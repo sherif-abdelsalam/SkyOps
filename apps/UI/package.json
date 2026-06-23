@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "esbuild app.js --bundle --minify --platform=node --outfile=dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
     "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
   }
 }

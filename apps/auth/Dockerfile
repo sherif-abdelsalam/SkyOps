@@ -1,17 +1,39 @@
-# Build stage
-FROM golang:alpine AS builder
-WORKDIR /go/src/app
-COPY . .
-WORKDIR /go/src/app/main
-RUN go get -v ./...
-RUN go build -o /go/bin/app -v ./...
+# Use the official Go image only for compiling the application.
+# This stage contains build tools that we do not want in the final image.
+FROM golang:1.22-alpine AS builder
 
-# Final stage
-FROM alpine:latest
-RUN apk --no-cache add ca-certificates
 WORKDIR /app
-COPY --from=builder /go/bin/app .
-RUN chmod +x ./app
-ENTRYPOINT ["./app"]
-LABEL Name=auth Version=2.0.0
+
+# Copy dependency files first.
+# This allows Docker to reuse the cached "go mod download" layer
+# if the source code changes but dependencies remain the same.
+COPY go.mod go.sum ./
+
+RUN go mod download
+
+COPY . .
+
+# Build a statically linked Linux binary
+# CGO_ENABLED=0 removes dependency on C libraries
+# -w -s strips debug information to reduce binary size
+RUN CGO_ENABLED=0 GOOS=linux go build \
+    -ldflags="-w -s" \
+    -o /app/bin/app \
+    ./main
+
+# Use Google's Distroless image for production.
+# Distroless images contain only the application runtime
+# and remove shells, package managers, and other utilities,
+# reducing image size and attack surface.
+FROM gcr.io/distroless/static:nonroot
+
+# Copy only the compiled binary from the builder stage.
+# No source code or build tools are included in the final image.
+COPY --from=builder /app/bin/app /app
+
 EXPOSE 8080
+
+# Run as a non-root user.
+# The ':nonroot' variant already provides a low-privilege user,
+# which is a container security best practice.
+ENTRYPOINT ["/app"]
