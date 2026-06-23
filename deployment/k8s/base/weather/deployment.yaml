@@ -23,8 +23,8 @@ spec:
           - name: APIKEY
             valueFrom:
               secretKeyRef:
-                key: skyops-weather-auth
-                name: apikey
+                name: skyops-weather-auth
+                key: apikey
           ports:
             - name: http
               containerPort: 5000
