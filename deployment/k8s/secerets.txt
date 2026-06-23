@@ -1,0 +1,33 @@
+aws eks update-kubeconfig \
+  --name dev-skyops-eks-cluster \
+  --region eu-north-1 \
+
+kubectl create secret generic mysql-secret \
+  --from-literal=root-password='secure-root-pw' \
+  --from-literal=auth-password='my-secret-pw' \
+  --from-literal=secret-key='xco0sr0fh4e52x03g9mv'
+
+  
+
+  
+
+kubectl exec -it mysql-0 -- mysql -u authuser -pmy-secret-pw
+
+
+
+# run this first 
+kubectl run alpine --rm -it --image=alpine -- sh 
+
+# then
+apk add curl
+curl -X POST http://weatherapp-auth:8080/users \
+-H "Content-Type: application/json" \
+-d '{"username": "testuser", "password": "testpassword"}'
+# Should return {"success":"User added succeszsfully"}
+
+
+
+
+
+kubectl create secret generic weather \
+  --from-literal=apikey='155e1d28fdmsh3acc0e05b1b4005p1f9e30jsn73d69522a213'
