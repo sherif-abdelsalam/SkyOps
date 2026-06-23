@@ -24,4 +24,4 @@ spec:
       - Validate=true
       - CreateNamespace=false
       - PrunePropagationPolicy=foreground
-      - PruneLast=true⏎                                                                                                                 sherif-abdelsalam@hodhod ~/I/a/a/e/example01> 
+      - PruneLast=true                                                                                                         sherif-abdelsalam@hodhod ~/I/a/a/e/example01> 
