@@ -1,0 +1,23 @@
+config:
+  registries:
+    - name: ECR
+      api_url: https://${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
+      prefix: ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
+      ping: true
+      insecure: false
+      credentials: ext:/scripts/ecr-login.sh
+      credsexpire: 10h
+
+authScripts:
+  enabled: true
+  scripts:
+    ecr-login.sh: |
+      #!/bin/sh
+      aws ecr get-login-password --region ${aws_region} \
+        | echo "AWS:$(cat)"
+
+serviceAccount:
+  create: true
+  name: argocd-image-updater
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::${aws_account_id}:role/argocd-image-updater

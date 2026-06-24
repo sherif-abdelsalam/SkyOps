@@ -66,3 +66,8 @@ variable "enable_external_secrets_crds" {
   type = bool
   default = true
 }
+
+
+variable "aws_account_id" {
+  type = string
+}
