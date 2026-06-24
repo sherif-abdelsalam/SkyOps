@@ -2,9 +2,7 @@
 
 > A production-grade, cloud-native weather platform deployed on AWS EKS using a full GitOps workflow.
 
-SkyOps is a multi-service application built as a real-world DevOps portfolio project. It demonstrates end-to-end infrastructure automation — from infrastructure provisioning with Terraform, to GitOps-driven continuous delivery with ArgoCD, to automated image updates via ArgoCD Image Updater.
-
----```
+SkyOps is a cloud-native weather application built with a microservices architecture. It provides user authentication and real-time weather information through a modern web interface while showcasing production-grade DevOps practices including Kubernetes, GitOps, CI/CD automation, Infrastructure as Code, and secure secrets management on AWS.
 
 ## 🏗️ Architecture Overview
 
