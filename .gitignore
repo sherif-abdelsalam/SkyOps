@@ -12,3 +12,4 @@ deloyment/argocd/repo*
 secrets-ssm.sh
 deployment/argocd/repo_connect.yaml
 repo_connect.yaml
+push-images.sh
