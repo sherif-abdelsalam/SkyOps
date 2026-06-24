@@ -4,7 +4,7 @@
 
 SkyOps is a multi-service application built as a real-world DevOps portfolio project. It demonstrates end-to-end infrastructure automation — from infrastructure provisioning with Terraform, to GitOps-driven continuous delivery with ArgoCD, to automated image updates via ArgoCD Image Updater.
 
----
+---```
 
 ## 🏗️ Architecture Overview
 
@@ -60,11 +60,3 @@ SkyOps/
 
 **Observability** *(planned)*
 - Prometheus · Grafana
-
----
-
-## 🚀 Quick Start
-
-1. **Provision infrastructure** → [Terraform](./deployment/README.md#terraform)
-2. **Bootstrap ArgoCD** → [ArgoCD Setup](./deployment/README.md#argocd-setup)
-3. **Run apps locally** → [Local Development](./apps/README.md#local-development)
