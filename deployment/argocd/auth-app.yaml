@@ -3,7 +3,13 @@ kind: Application
 metadata:
   name: auth
   namespace: argocd
-spec:
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: auth=187899929694.dkr.ecr.eu-north-1.amazonaws.com/skyops-auth
+    argocd-image-updater.argoproj.io/auth.update-strategy: name
+    argocd-image-updater.argoproj.io/auth.allow-tags: regexp:.* 
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-ssh-key
+    argocd-image-updater.argoproj.io/git-branch: main
+spec: 
   project: default
   source:
     repoURL: https://github.com/sherif-abdelsalam/SkyOps.git
