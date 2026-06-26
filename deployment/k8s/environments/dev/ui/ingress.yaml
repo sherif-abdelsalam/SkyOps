@@ -5,15 +5,22 @@ metadata:
   namespace: skyops-apps-dev
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-dev
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: nginx  
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - skyops.fortstak.online
+      secretName: skyops-tls
   rules:
-  - http:                   # no host
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: weatherapp-ui   # your service name
-            port:
-              number: 3000
+    - host: skyops.fortstak.online
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: weatherapp-ui
+                port:
+                  number: 3000
