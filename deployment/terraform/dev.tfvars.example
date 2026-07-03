@@ -1,0 +1,28 @@
+# Copy to dev.tfvars (gitignored) and fill in your values.
+# cp dev.tfvars.example dev.tfvars
+
+env      = "dev"
+region   = "eu-north-1"
+zone1    = "eu-north-1a"
+zone2    = "eu-north-1b"
+zone3    = "eu-north-1c"
+
+eks_name    = "skyops-dev"
+eks_version = "1.31"
+
+ingress_nginx_version = "4.10.1"
+argocd_ingress_host   = "argocd.example.com"
+
+eso_namespace       = "skyops-secrets-dev"
+app_namespace       = "skyops-apps-dev"
+eso_service_account = "skyops-eso-sa-dev"
+
+aws_account_id = "123456789012"
+
+# ARNs of Secrets Manager secrets ESO is allowed to read
+secret_arns = [
+  "arn:aws:secretsmanager:eu-north-1:123456789012:secret:skyops-dev/auth-password-XXXXXX",
+  "arn:aws:secretsmanager:eu-north-1:123456789012:secret:skyops-dev/root-password-XXXXXX",
+  "arn:aws:secretsmanager:eu-north-1:123456789012:secret:skyops-dev/secret-key-XXXXXX",
+  "arn:aws:secretsmanager:eu-north-1:123456789012:secret:skyops-dev/apikey-XXXXXX",
+]
