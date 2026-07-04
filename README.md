@@ -21,7 +21,19 @@ SkyOps is a cloud-native weather application built with a microservices architec
 
 ## 🏗️ Architecture Overview
 
-![SkyOps AWS architecture](./skyops-aws-arch.png)
+![SkyOps AWS architecture](./images/skyops-aws-arch.png)
+
+![Kubernetes Cluster](./images/Custer03.png)
+
+---
+
+## 🏗️ Application Snippets 
+
+![Auth Page](./images/image.png)
+
+![Weather Page](./images/image%20copy.png)
+
+
 
 High-level flow:
 
