@@ -228,33 +228,6 @@ All apps use automated sync with prune and self-heal.
 
 ---
 
-## 🖼️ ArgoCD Image Updater *(partially configured)*
-
-Prepared but not fully active:
-
-- Helm release for Image Updater is **commented out** in `terraform/helm.tf`
-- `auth-app.yaml` has Image Updater annotations; other apps do not
-- Base deployments pin `:latest` directly in YAML (no `images:` block in kustomizations yet)
-
-When enabled, the intended flow is:
-
-```
-New image pushed to ECR
-        │
-        ▼
-Image Updater polls ECR
-        │
-        ▼
-Commits updated tag → Git (kustomization or deployment)
-        │
-        ▼
-ArgoCD syncs → rolling update
-```
-
-Reference values: `terraform/values/argocd-image-updater.yaml`.
-
----
-
 ## 🔐 Secrets — External Secrets Operator
 
 Secrets live in **AWS Secrets Manager** and are synced into Kubernetes `Secret` objects by ESO. Nothing sensitive is committed to Git.
