@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - skyops.fortstak.online
+        - skyops.fortstak.com
       secretName: skyops-tls
   rules:
-    - host: skyops.fortstak.online
+    - host: skyops.fortstak.com
       http:
         paths:
           - path: /
