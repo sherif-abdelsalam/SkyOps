@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-secret-store
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sherif-abdelsalam/SkyOps.git
+    targetRevision: main
+    path: deployment/k8s/infra
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
